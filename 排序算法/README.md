@@ -110,3 +110,96 @@ console.log(
 );
 ```
 
+### 插入排序
+
+插入排序是一种最简单直观的排序算法，它的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。插入排序和冒泡排序一样，也有一种优化算法，叫做拆半插入。
+
+#### 算法步骤
+
+1. 将第一待排序序列第一个元素看做一个有序序列，把第二个元素到最后一个元素当成是未排序序列。
+
+2. 从头到尾依次扫描未排序序列，将扫描到的每个元素插入有序序列的适当位置。（如果待插入的元素与有序序列中的某个元素相等，则将待插入元素插入到相等元素的后面。）
+
+#### 动画演示
+
+![插入排序](https://raw.githubusercontent.com/coder-th/static/master/202108281049811.gif)
+
+#### 代码演示
+
+```javascript
+function insertionSort(arr) {
+  for (let i = 1; i < arr.length; i++) {
+    //   当前要拿出来比较的数
+    const current = arr[i];
+    // 记录当前被比较的数的索引
+    let preIndex = i - 1;
+    while (preIndex >= 0 && arr[preIndex] > current) {
+      // 当被比较的数比当前的数大，那么往后移动一位
+      arr[preIndex + 1] = arr[preIndex];
+      preIndex--;
+    }
+    // 找到的数不再大于当前的数或者已经到尽头了，把当前的数插入到被比较的数后面
+    arr[preIndex + 1] = current;
+  }
+  return arr;
+}
+console.log(
+  insertionSort([3, 5, 38, 15, 36, 26, 27, 2, 44, 46, 4, 19, 47, 48, 50])
+  //[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+);
+```
+
+### 希尔排序(了解)
+
+希尔排序，也称递减增量排序算法，是插入排序的一种更高效的改进版本。但希尔排序是非稳定排序算法。
+
+希尔排序是基于插入排序的以下两点性质而提出改进方法的：
+
+- 插入排序在对几乎已经排好序的数据操作时，效率高，即可以达到线性排序的效率；
+- 但插入排序一般来说是低效的，因为插入排序每次只能将数据移动一位；
+
+希尔排序的基本思想是：先将整个待排序的记录序列分割成为若干子序列分别进行直接插入排序，待整个序列中的记录"基本有序"时，再对全体记录进行依次直接插入排序。
+
+#### 算法步骤
+
+选择一个增量序列 t1，t2，……，tk，其中 ti > tj, tk = 1；
+
+按增量序列个数 k，对序列进行 k 趟排序；
+
+每趟排序，根据对应的增量 ti，将待排序列分割成若干长度为 m 的子序列，分别对各子表进行直接插入排序。仅增量因子为 1 时，整个序列作为一个表来处理，表长度即为整个序列的长度。
+
+#### 动画演示
+
+![希尔排序](https://raw.githubusercontent.com/coder-th/static/master/202108281149133.png)
+
+#### 代码实现
+
+```javascript
+function shellSort(arr) {
+  var len = arr.length,
+    current,
+    subAreaLen = 1;
+  while (subAreaLen < len / 3) {
+    //动态定义间隔序列
+    subAreaLen = subAreaLen * 3 + 1;
+  }
+  for (var gap = subAreaLen; gap > 0; gap = Math.floor(gap / 3)) {
+    for (var i = gap; i < len; i++) {
+      current = arr[i];
+      var preIndex = i - gap;
+      while (preIndex >= 0 && arr[preIndex] > current) {
+        arr[preIndex + gap] = arr[preIndex];
+        preIndex -= gap;
+      }
+      arr[preIndex + gap] = current;
+    }
+  }
+  return arr;
+}
+
+console.log(
+  shellSort([3, 5, 38, 15, 36, 26, 27, 2, 44, 46, 4, 19, 47, 48, 50])
+  //[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+);
+```
+
