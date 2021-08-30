@@ -203,3 +203,170 @@ console.log(
 );
 ```
 
+### 归并排序
+
+归并排序（Merge sort）是建立在归并操作上的一种有效的排序算法。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。
+
+#### 算法步骤
+
+1. 申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列；
+2. 设定两个指针，最初位置分别为两个已经排序序列的起始位置；
+3. 比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置；
+4. 重复步骤 3 直到某一指针达到序列尾；
+5. 将另一序列剩下的所有元素直接复制到合并序列尾。
+
+#### 动画演示
+
+![归并排序](https://raw.githubusercontent.com/coder-th/static/master/202108300933266.gif)
+
+#### 代码实现
+
+```javascript
+function sort(arr) {
+  if (arr == null || arr.length < 2) {
+    return;
+  }
+  mergeSort(arr, 0, arr.length - 1);
+  return arr;
+}
+function mergeSort(arr, l, r) {
+  if (l === r) return;
+  var m = l + ((r - l) >> 1);
+  mergeSort(arr, l, m);
+  mergeSort(arr, m + 1, r);
+  // merge过程是要层层进行的
+  merge(arr, l, m, r);
+}
+function merge(arr, l, m, r) {
+  var help = [];
+  var i = 0;
+  var p1 = l;
+  var p2 = m + 1;
+  while (p1 <= m && p2 <= r) {
+    // 取得某个较小的值，赋值到help。指针向后一位
+    help[i++] = arr[p1] < arr[p2] ? arr[p1++] : arr[p2++];
+  }
+
+  while (p1 <= m) {
+    // 将剩下的值拷贝到help的数组
+    help[i++] = arr[p1++];
+  }
+
+  while (p2 <= r) {
+    help[i++] = arr[p2++];
+  }
+
+  for (var i = 0; i < help.length; i++) {
+    arr[l + i] = help[i];
+  }
+  console.log("merge", arr);
+}
+
+console.log(
+  sort([3, 5, 38, 15, 36, 26, 27])
+  //[3,  5, 15, 26,27, 36, 38]
+);
+
+/**
+ *       3,  5, 15, 26,27, 36, 38
+ *         /         \
+ *        3,5,15      26,27,36,38                 => merge
+ *        /     \            /      \
+ *        3  5,15           26,27    36,38        => merge
+ *          /     \        /    \     /     \
+ *          5     15      26    27  36      38    => merge
+ */
+```
+
+#### 时间复杂度的计算
+
+由于递归是很经典的分而治之的策略，遵循`master公式`。
+
+`master`公式（也称主方法）是用来利用分治策略来解决问题经常使用的时间复杂度的分析方法，（补充：分治策略的递归解法还有两个常用的方法叫做代入法和递归树法），众所周知，分治策略中使用递归来求解问题分为三步走，分别为分解、解决和合并，所以主方法的表现形式：
+
+`T [n] = aT[n/b] + f (n)`（直接记为`T [n] = aT[n/b] + T (N^d`)）
+
+其中 `a >= 1` and `b > 1` 是常量，其表示的意义是
+
+- `n`表示问题的规模，
+- `a`表示递归的次数也就是生成的子问题数，
+- `b`表示每次递归是原来的`1/b`之一个规模，`f（n）`表示分解和合并所要花费的时间之和。
+- `d`表示子过程的时间复杂度
+
+**最终解法**
+
+1. 当`d<logb a`时，时间复杂度为`O(n^(logb a))`
+2. 当`d=logb a`时，时间复杂度为`O((n^d)*logn)`
+3. 当`d>logb a`时，时间复杂度为`O(n^d)`
+
+**示例**
+
+我们的归并排序
+
+1. `a`是**2**，因为`mergeSort`调用了两次;
+2. `b`是**2**，因为我们每次执行的区间的数量是原来的`1/2`;
+3. `d`是**1**，因为`mergeSort`函数内部做的事情只是将区间缩小。时间复杂度为`O(n)`
+
+所以最终结果，归并排序的时间复杂度是`O(NlogN)`,额外空间复杂度是`O(N)`
+
+### 快速排序
+
+#### 算法步骤
+
+#### 动画演示
+
+![快速排序](https://raw.githubusercontent.com/coder-th/static/master/202108301733303.gif)
+
+#### 代码实现
+
+```javascript
+function swap(arr, i, j) {
+  var temp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = temp;
+}
+
+function sort(arr) {
+  if (!arr || arr.length < 2) {
+    return;
+  }
+  quickSort(arr, 0, arr.length - 1);
+  return arr;
+}
+
+function quickSort(arr, l, r) {
+  if (l < r) {
+    // 使用随机数，可以让最坏情况发生的事情变成概率事件，从而降低复杂度
+    var random = Math.floor(Math.random() * (r - l + 1));
+    swap(arr, l + random, r);
+    var p = partition(arr, l, r);
+    quickSort(arr, l, p[0] - 1);
+    quickSort(arr, p[1] + 1, r);
+  }
+}
+
+function partition(arr, l, r) {
+  var less = l - 1; // <区
+  var more = r; // >区
+  while (l < more) {
+    if (arr[l] < arr[r]) {
+      // 当前数小，<区向右扩，交换值，当前数指针向后
+      swap(arr, ++less, l++);
+    } else if (arr[l] > arr[r]) {
+      // 当前数大，>区向左扩，交换值，当前数指针不动，
+      swap(arr, --more, l);
+    } else {
+      // 相等，那这个位置就不管了，指针继续往后移
+      l++;
+    }
+  }
+  swap(arr, more, r);
+  return [less + 1, more];
+}
+
+console.log(
+  sort([3, 5, 38, 15, 36, 26, 27, 2, 44, 46, 4, 19, 47, 48, 50])
+  //[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+);
+```
+
