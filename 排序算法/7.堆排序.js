@@ -1,5 +1,5 @@
 function heapSort(arr) {
-  if (!arr || arr.length === 2) return arr;
+  if (!arr || arr.length < 2) return arr;
   for (var i = 0; i < arr.length; i++) {
     heapInsert(arr, i);
   }
