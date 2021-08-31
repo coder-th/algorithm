@@ -576,3 +576,157 @@ console.log(
 
 ```
 
+### 基数排序
+
+基数排序是一种非比较型整数排序算法，其原理是将整数按位数切割成不同的数字，然后按每个位数分别比较。由于整数也可以表达字符串（比如名字或日期）和特定格式的浮点数，所以基数排序也不是只能使用于整数。
+
+#### 算法步骤
+
+简易版的思路：
+
+1. 准备一个额外空间S，算出最高位
+2. `arr`从个位数开始，存储个位数与空间`S`索引相同的数到对应位置
+3. 利用空间`S`，重排`arr`，这样就可以按照个位数升序的顺序；
+4. 不断重复步骤2和步骤3，直到最高位就可以了
+
+#### 动画演示
+
+#### 代码实现
+
+- 简易版的
+
+  > 复杂度为`O(N^2)`
+
+  ```javascript
+  function radixSort(arr, maxDigit) {
+    var mod = 10;
+    var dev = 1;
+    var counter = new Array(10);
+    for (var i = 0; i < maxDigit; i++, dev *= 10, mod *= 10) {
+      for (var j = 0; j < arr.length; j++) {
+        var bucket = parseInt((arr[j] % mod) / dev);
+        if (counter[bucket] == null) {
+          counter[bucket] = [];
+        }
+        // 存储当前位数与空间索引相同的数到对应位置   比如  13 => bucket[3] = 13
+        counter[bucket].push(arr[j]);
+      }
+      var pos = 0;
+      for (var j = 0; j < counter.length; j++) {
+        var value = null;
+        if (counter[j] != null) {
+          while ((value = counter[j].shift()) != null) {
+            //遵循先进先出的原则
+            // 重组arr,实现当前计算位数的升序
+            arr[pos++] = value;
+          }
+        }
+      }
+    }
+    return arr;
+  }
+  /**
+   * 获取最大位数
+   */
+  function getMaxBit(arr) {
+    var max = Number.MIN_SAFE_INTEGER;
+    for (var i = 0; i < arr.length; i++) {
+      max = Math.max(max, arr[i]);
+    }
+    var res = 0;
+    while (max != 0) {
+      res++;
+      max = Math.floor(max / 10);
+    }
+    return res;
+  }
+  const arr = [3, 5, 38, 15, 0, 36, 26, 2, 44, 46, 4, 19, 47, 48, 50];
+  console.log(
+    radixSort(arr, getMaxBit(arr))
+    //  [0, 2, 3, 4, 5, 15, 19, 26, 36, 38, 44, 46, 47, 48, 50]
+  );
+  
+  ```
+
+- 复杂版本
+
+  > 复杂度为`O(k*N)`
+
+  ```javascript
+  /**
+   * 获取最大位数
+   */
+  function getMaxBit(arr) {
+    var max = Number.MIN_SAFE_INTEGER;
+    for (var i = 0; i < arr.length; i++) {
+      max = Math.max(max, arr[i]);
+    }
+    var res = 0;
+    while (max != 0) {
+      res++;
+      max = Math.floor(max / 10);
+    }
+    return res;
+  }
+  
+  /**
+   * 获取某个数字在某一位上的数字
+   * @param {*} x
+   * @param {*} d
+   */
+  function getDigit(x, d) {
+    return (x / Math.pow(10, d - 1)) % 10;
+  }
+  
+  function radixSort(arr) {
+    if (!arr || arr.length < 2) return arr;
+    partition(arr, 0, arr.length - 1, getMaxBit(arr));
+    return arr;
+  }
+  
+  function partition(arr, begin, end, digit) {
+    const radix = 10;
+    var i = 0,
+      j = 0;
+  
+    var bucket = new Array(end - begin + 1).fill(0);
+    for (var d = 1; d <= digit; d++) {
+      var count = new Array(radix).fill(0);
+      for (i = begin; i <= end; i++) {
+        j = getDigit(arr[i], d);
+        count[j]++;
+      }
+      for (i = 1; i < radix; i++) {
+        count[i] = count[i] + count[i - 1];
+      }
+      for (i = end; i >= begin; i--) {
+        j = getDigit(arr[i], d);
+        bucket[count[j] - 1] = arr[i];
+        count[j]--;
+      }
+      for (i = begin, j = 0; i <= end; i++, j++) {
+        arr[i] = bucket[j];
+      }
+    }
+  }
+  const arr = [3, 5, 38, 15, 0, 36, 26, 2, 44, 46, 4, 19, 47, 48, 50];
+  console.log(
+    radixSort(arr)
+    //  [0, 2, 3, 4, 5, 15, 19, 26, 36, 38, 44, 46, 47, 48, 50]
+  );
+  ```
+
+#### 复杂性对比
+
+  **基数排序 vs 计数排序 vs 桶排序**
+
+  基数排序有两种方法：
+
+  - MSD 从高位开始进行排序
+  - LSD 从低位开始进行排序
+
+  这三种排序算法都利用了桶的概念，但对桶的使用方法上有明显差异：
+
+  - 基数排序：根据键值的每位数字来分配桶；
+  - 计数排序：每个桶只存储单一键值；
+  - 桶排序：每个桶存储一定范围的数值；
