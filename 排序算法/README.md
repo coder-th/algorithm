@@ -370,3 +370,136 @@ console.log(
 );
 ```
 
+### 堆排序
+
+#### 算法步骤
+
+1. 创建一个大顶堆 H[0…R]
+2. *把堆首（最大值）和堆尾互换；*
+3. 把堆的尺寸缩小 1，目的是把新的数组顶端数据调整到相应位置；
+4. 重复步骤 2，直到堆的尺寸为 1。
+
+#### 动画演示
+
+![堆排序](https://raw.githubusercontent.com/coder-th/static/master/202108310933252.gif)
+
+![堆排序](https://raw.githubusercontent.com/coder-th/static/master/202108310933183.gif)
+
+#### 代码实现
+
+```javascript
+function heapSort(arr) {
+  if (!arr || arr.length < 2) return arr;
+  //   1.创建一个大顶堆
+  buildMaxHeap(arr);
+  var size = arr.length;
+  for (var i = arr.length - 1; i > 0; i--) {
+    // 2.把堆首（最大值）和堆尾互换；
+    swap(arr, 0, i);
+    // 3.把堆的尺寸缩小 1，目的是把新的数组顶端数据调整到相应位置；
+    heapify(arr, 0, --size);
+    // 重复步骤 2，直到堆的尺寸为 1。
+  }
+  return arr;
+}
+/**
+ * 创建一个大顶堆
+ * @param {*} arr
+ */
+function buildMaxHeap(arr) {
+  for (var i = Math.floor(arr.length / 2); i >= 0; i--) {
+    // 因为叶节点不会有孩子，所以可以不用构建堆，减少构建次数
+    heapify(arr, i);
+  }
+}
+/**
+ * 将普通的堆转化为大根堆
+ * @param {*} arr
+ * @param {*} index
+ * @param {*} size
+ */
+function heapify(arr, index, size = arr.length) {
+  var left = index * 2 + 1;
+  var right = index * 2 + 2;
+  var largest = index;
+  if (left < size && arr[left] > arr[largest]) {
+    // 左孩子比父节点大
+    largest = left;
+  }
+  if (right < size && arr[right] > arr[largest]) {
+    // 右孩子比父节点大
+    largest = right;
+  }
+  if (largest !== index) {
+    swap(arr, index, largest);
+    heapify(arr, largest, size);
+  }
+}
+
+function swap(arr, i, j) {
+  var temp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = temp;
+}
+
+console.log(
+  heapSort([3, 5, 38, 15, 36, 26, 27, 2, 44, 46, 4, 19, 47, 48, 50])
+  //[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50]
+);
+```
+
+### 计数排序
+
+#### 算法步骤
+
+- （1）找出待排序的数组中最大和最小的元素
+- （2）统计数组中每个值为i的元素出现的次数，存入数组C的第i项
+- （3）对所有的计数累加（从C中的第一个元素开始，每一项和前一项相加）
+- （4）反向填充目标数组：将每个元素i放在新数组的第C(i)项，每放一个元素就将C(i)减去1
+
+#### 使用条件
+
+- 只能用在数据范围不大的场景中，若数据范围 k 比要排序的数据 n 大很多，就不适合用计数排序。
+- 计数排序只能给非负整数排序，其他类型需要在不改变相对大小情况下，转换为非负整数。
+- 比如如果考试成绩精确到小数后一位，就需要将所有分数乘以 10，转换为整数。
+
+#### 动画演示
+
+![计数排序](https://raw.githubusercontent.com/coder-th/static/master/202108311226874.gif)
+
+### 代码实现
+
+```javascript
+function countingSort(arr) {
+  if (!arr || arr.length < 2) {
+    return arr;
+  }
+  var max = Number.MIN_VALUE;
+  var min = 0; // min => 作用就是可以兼容负数的情况，达到扩容的目的
+  for (var i = 0; i < arr.length; i++) {
+    // 计算出数组的最大值和最小值
+    max = Math.max(max, arr[i]);
+    min = Math.min(min, arr[i]);
+  }
+  var bucket = new Array(max - min + 1).fill(0);
+  for (var i = 0; i < arr.length; i++) {
+    // 每一个桶的索引代表该桶指向原数组的值，存储的值为该元素出现的个数
+    bucket[arr[i] - min]++;
+  }
+  var i = 0;
+  for (var j = 0; j < bucket.length; j++) {
+    while (bucket[j]--) {
+      // 将该桶的存储的count值反向输出,比如   bucket[50] = 3   => newArr:[50,50,50]
+      arr[i++] = j + min;
+    }
+  }
+
+  return arr;
+}
+console.log(
+  countingSort([3, 5, 38, 15, -6, 0, 36, 26, -27, 2, 44, 46, 4, 19, 47, 48, 50])
+  //  [-27, -6, 0 ,  2,  3,  4,  5,15, 19, 26, 36, 38, 44,46, 47, 48, 50]
+);
+
+```
+
