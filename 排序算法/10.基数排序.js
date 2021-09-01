@@ -1,3 +1,4 @@
+const arr = [3, 5, 38, 15, 0, 36, 26, 2, 44, 46, 4, 19, 47, 48, 50];
 function radixSort(arr, maxDigit) {
   var mod = 10;
   var dev = 1;
@@ -26,10 +27,10 @@ function radixSort(arr, maxDigit) {
   return arr;
 }
 
-// console.log(
-//   radixSort(arr, getMaxBit(arr))
-//   //  [0, 2, 3, 4, 5, 15, 19, 26, 36, 38, 44, 46, 47, 48, 50]
-// );
+console.log(
+  radixSort(arr, getMaxBit(arr))
+  //  [0, 2, 3, 4, 5, 15, 19, 26, 36, 38, 44, 46, 47, 48, 50]
+);
 /**
  * 获取最大位数
  */
@@ -52,10 +53,10 @@ function getMaxBit(arr) {
  * @param {*} d
  */
 function getDigit(x, d) {
-  return (x / Math.pow(10, d - 1)) % 10;
+  return Math.floor(x / Math.pow(10, d - 1)) % 10;
 }
 
-function radixSort(arr) {
+function radixSort2(arr) {
   if (!arr || arr.length < 2) return arr;
   partition(arr, 0, arr.length - 1, getMaxBit(arr));
   return arr;
@@ -71,9 +72,11 @@ function partition(arr, begin, end, digit) {
     var count = new Array(radix).fill(0);
     for (i = begin; i <= end; i++) {
       j = getDigit(arr[i], d);
+      // 记录符合当前位数的数字的个数
       count[j]++;
     }
     for (i = 1; i < radix; i++) {
+      // 将小于该位数的数字和统计，作用是可以确保该位数的数字能够在准确的位置上
       count[i] = count[i] + count[i - 1];
     }
     for (i = end; i >= begin; i--) {
@@ -86,8 +89,8 @@ function partition(arr, begin, end, digit) {
     }
   }
 }
-const arr = [3, 5, 38, 15, 0, 36, 26, 2, 44, 46, 4, 19, 47, 48, 50];
+
 console.log(
-  radixSort(arr)
+  radixSort2(arr)
   //  [0, 2, 3, 4, 5, 15, 19, 26, 36, 38, 44, 46, 47, 48, 50]
 );
