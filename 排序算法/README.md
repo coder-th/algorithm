@@ -34,7 +34,7 @@
 
 #### 图片演示
 
-![冒泡排序](https://raw.githubusercontent.com/coder-th/static/master/bubbleSort.gif)
+![冒泡排序](https://cdn.jsdelivr.net/gh/coder-th/static/202109031524955.gif)
 
 #### 代码实现
 
@@ -79,7 +79,9 @@ console.log(
 
 #### 图片演示
 
-![选择排序](https://raw.githubusercontent.com/coder-th/static/master/selectionSort.gif)
+![选择排序](https://cdn.jsdelivr.net/gh/coder-th/static/202109031527884.png)
+
+
 
 #### 代码实现
 
@@ -124,7 +126,7 @@ console.log(
 
 #### 动画演示
 
-![插入排序](https://raw.githubusercontent.com/coder-th/static/master/202108281049811.gif)
+![插入排序](https://cdn.jsdelivr.net/gh/coder-th/static/202109031528607.gif)
 
 #### 代码演示
 
@@ -172,7 +174,7 @@ console.log(
 
 #### 动画演示
 
-![希尔排序](https://raw.githubusercontent.com/coder-th/static/master/202108281149133.png)
+![希尔排序](https://cdn.jsdelivr.net/gh/coder-th/static/202109031529730.gif)
 
 #### 代码实现
 
@@ -219,7 +221,7 @@ console.log(
 
 #### 动画演示
 
-![归并排序](https://raw.githubusercontent.com/coder-th/static/master/202108300933266.gif)
+![归并排序](https://cdn.jsdelivr.net/gh/coder-th/static/202109031529554.gif)
 
 #### 代码实现
 
@@ -333,7 +335,9 @@ console.log(
 
 #### 动画演示
 
-![快速排序](https://raw.githubusercontent.com/coder-th/static/master/202108301733303.gif)
+![快速排序](https://cdn.jsdelivr.net/gh/coder-th/static/202109031531788.gif)
+
+
 
 #### 代码实现
 
@@ -407,9 +411,9 @@ console.log(
 
 #### 动画演示
 
-![堆排序](https://raw.githubusercontent.com/coder-th/static/master/202108310933252.gif)
+![堆排序](https://cdn.jsdelivr.net/gh/coder-th/static/202109031532855.gif)
 
-![堆排序](https://raw.githubusercontent.com/coder-th/static/master/202108310933183.gif)
+![堆排序](https://cdn.jsdelivr.net/gh/coder-th/static/202109031532684.gif)
 
 #### 代码实现
 
@@ -491,7 +495,7 @@ console.log(
 
 #### 动画演示
 
-![计数排序](https://raw.githubusercontent.com/coder-th/static/master/202108311226874.gif)
+![计数排序](https://cdn.jsdelivr.net/gh/coder-th/static/202109031533634.gif)
 
 #### 代码实现
 
@@ -540,7 +544,7 @@ console.log(
 
 #### 动画演示
 
-![桶排序](https://raw.githubusercontent.com/coder-th/static/master/202108311439989.gif)
+![桶排序](https://cdn.jsdelivr.net/gh/coder-th/static/202109031533760.gif)
 
 #### 代码实现
 
@@ -616,6 +620,8 @@ console.log(
 4. 不断重复步骤2和步骤3，直到最高位就可以了
 
 #### 动画演示
+
+![基数排序](https://cdn.jsdelivr.net/gh/coder-th/static/202109031534198.gif)
 
 #### 代码实现
 
