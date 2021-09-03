@@ -6,7 +6,7 @@
 
 每个算法都有自己的时间复杂度，稳定性特征，以下是十大经典算法的常见指标对比图
 
-![常见指标对比图](https://raw.githubusercontent.com/coder-th/static/master/20210827162509.png)
+![常见指标对比图](https://cdn.jsdelivr.net/gh/coder-th/static/20210827162509.png)
 
 ## 算法指标
 
