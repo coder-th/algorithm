@@ -353,7 +353,7 @@ const maxHeap = new Heap(function (left, right) {
 maxHeap.push(5);
 maxHeap.push(10);
 maxHeap.push(2);
-maxHeap.push(7);
+maxHeap.push(17);
 maxHeap.push(6);
 console.log(maxHeap);
 console.log(maxHeap.pop());
